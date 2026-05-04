@@ -17,8 +17,8 @@ export default defineConfig(async () => ({
     port: 1420,
     strictPort: true,
     host: host || false,
-    hmr: host ? { protocol: "ws", host, port: 1421 } : undefined,
+    hmr: false, // Temporarily disable HMR to test reload issue
     watch: { // 3. tell Vite to ignore watching `src-tauri`
-    ignored: ["**/src-tauri/**"] }
+    ignored: ["**/src-tauri/**", "**/*.db"] }
   }
 }));

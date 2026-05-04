@@ -1,97 +1,309 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { listen } from "@tauri-apps/api/event";
+
+  import IconX from "phosphor-icons-svelte/IconXBold.svelte";
+
   import Modal from "../components/common/Modal.svelte";
-  import ServerList from "../components/ServerList.svelte";
-  import AddServerForm from "../components/AddServerForm.svelte";
+  import ServerList from "../components/ui/ServerList.svelte";
+  import AddServerForm from "../components/forms/AddServerForm.svelte";
+  import CreateGroupForm from "../components/forms/CreateGroupForm.svelte";
+  import StatusBar from "../components/layout/StatusBar.svelte";
+  import Header from "../components/layout/Header.svelte";
+
   import type { Server } from "../lib/types.js";
-  import { checkServerHealth } from "../lib/services/healthcheck";
-  import { DatabaseService } from "../lib/services/database";
+  import { DatabaseService } from "../lib/services/database.js";
+  import GroupedServerList from "../components/ui/GroupedServerList.svelte";
+  import ViewToolbar from "../components/ui/ViewToolbar.svelte";
+
+  const INTERVAL_SECS = 30;
 
   let showModal = $state(false);
+  let showGroupModal = $state(false);
   let servers: Server[] = $state([]);
-  const dbService = new DatabaseService();
-  console.log(showModal);
+  let serversByGroup = $state<Map<number | null, Server[]>>(new Map());
+  let groups = $state<{ id: number; name: string }[]>([]);
+  let viewMode = $state<"list" | "groups">("list");
+  let isRunning = $state(false);
+  let lastChecked = $state<Date | null>(null);
+  let isTogglingSync = $state(false);
+  let editingServer: Server | null = $state(null);
+  let search = $state("");
+
+  let filtered = $derived(
+    search.trim()
+      ? servers.filter(
+          (s) =>
+            s.name.toLowerCase().includes(search.toLowerCase()) ||
+            s.url.toLowerCase().includes(search.toLowerCase()),
+        )
+      : servers,
+  );
+
+  async function initializeHealthCheckState() {
+    try {
+      const status =
+        await DatabaseService.health.getPeriodicHealthCheckStatus();
+      isRunning = status.is_running;
+      lastChecked =
+        status.last_check > 0 ? new Date(status.last_check * 1000) : null;
+    } catch (e) {
+      console.error("[+page] Failed to initialize health check state:", e);
+      isRunning = false;
+      lastChecked = null;
+    }
+  }
+
   onMount(async () => {
-    await dbService.init();
     await fetchServers();
+    await initializeHealthCheckState();
+    await listen("servers-changed", () => {
+      fetchServers();
+      lastChecked = new Date();
+    });
   });
 
   async function fetchServers() {
-    servers = await dbService.getServers();
-    console.log("Fetched servers:", servers);
+    try {
+      servers = await DatabaseService.servers.getServers();
+    } catch (e) {
+      console.error("[+page] fetchServers getServers error:", e);
+      throw e;
+    }
+
+    try {
+      serversByGroup = await DatabaseService.servers.getServersByGroupsMap();
+    } catch (e) {
+      console.error("[+page] fetchServers getServersByGroupsMap error:", e);
+      throw e;
+    }
+
+    try {
+      groups = await DatabaseService.groups.getAllGroups();
+    } catch (e) {
+      console.error("[+page] fetchServers getAllGroups error:", e);
+      throw e;
+    }
   }
 
-  async function addServer(url: string, name: string) {
-    await dbService.addServer(url, name);
+  async function addServer(name: string, url: string, groupId?: number | null) {
+    await DatabaseService.servers.addServer(name, url, groupId);
     await fetchServers();
+    closeModal();
+  }
+
+  async function updateServer(
+    id: number,
+    name: string,
+    url: string,
+    groupId?: number | null,
+  ) {
+    await DatabaseService.servers.updateServer(id, name, url, groupId);
+    await fetchServers();
+    closeModal();
+  }
+
+  function openAddModal() {
+    editingServer = null;
+    showModal = true;
+  }
+
+  function openEditModal(server: Server) {
+    editingServer = server;
+    showModal = true;
+  }
+
+  function closeModal() {
+    showModal = false;
+    editingServer = null;
   }
 
   async function clearAllServers() {
-    await dbService.clearAllServers();
-    await fetchServers();
+    for (const server of servers) {
+      await DatabaseService.servers.deleteServer(server.id);
+    }
   }
 
   async function handleCheckHealth(server: Server) {
-    const result = await checkServerHealth(server);
-    if (result) {
-      await dbService.updateServerStatus(
-        server.id,
-        result.status,
-        result.response_time
-      );
-    } else {
-      await dbService.updateServerStatus(server.id, "failed", null);
+    try {
+      await DatabaseService.health.checkHealth(server.id);
+      lastChecked = new Date();
+      await fetchServers();
+    } catch (error: any) {
+      console.error(`Failed to check health of server ${server.id}: ${error}`);
     }
-    await fetchServers();
+  }
+
+  async function toggleSync() {
+    isTogglingSync = true;
+    try {
+      const status =
+        await DatabaseService.health.getPeriodicHealthCheckStatus();
+      isRunning = status.is_running;
+      lastChecked =
+        status.last_check > 0 ? new Date(status.last_check * 1000) : null;
+
+      if (isRunning) {
+        await DatabaseService.health.stopPeriodicHealthChecks();
+        isRunning = false;
+      } else {
+        await DatabaseService.health.startPeriodicHealthChecks(INTERVAL_SECS);
+        isRunning = true;
+      }
+    } catch (e) {
+      console.error("[+page] toggleSync error:", e);
+      try {
+        const status =
+          await DatabaseService.health.getPeriodicHealthCheckStatus();
+        isRunning = status.is_running;
+        lastChecked =
+          status.last_check > 0 ? new Date(status.last_check * 1000) : null;
+      } catch (syncError) {
+        console.error("[+page] sync error after toggle error:", syncError);
+        isRunning = !isRunning;
+      }
+    } finally {
+      isTogglingSync = false;
+    }
   }
 </script>
 
-<main class="container">
-  <div class="w-full flex justify-between items-center">
-    <h1 class="text-xl font-mono">Welcome to EndPoint!</h1>
-    <div class="flex gap-2">
-      <button
-        class="bg-rose-700 text-base px-3 py-1.5 rounded-xl border border-b-2 border-rose-400 cursor-pointer text-white hover:bg-rose-800 transition"
-        onclick={clearAllServers}
-      >
-        Clear All Servers
-      </button>
-      <button
-        class="bg-indigo-700 text-base px-3 py-1.5 rounded-xl border border-b-2 border-indigo-400 cursor-pointer text-white hover:bg-indigo-800 transition"
-        onclick={() => (showModal = true)}
-      >
-        Add Server
-      </button>
-    </div>
-  </div>
+<main class="container font-jetbrains">
+  <Header
+    {isRunning}
+    {isTogglingSync}
+    serversCount={servers.length}
+    onToggleSync={toggleSync}
+    onClearAll={clearAllServers}
+    onOpenAddModal={openAddModal}
+  />
 
-  <ServerList {servers} onCheckHealth={handleCheckHealth} />
+  <StatusBar {servers} {isRunning} {lastChecked} intervalSecs={INTERVAL_SECS} />
+
+  <ViewToolbar
+    {viewMode}
+    {search}
+    serverCount={servers.length}
+    groupCount={groups.length}
+    onViewModeChange={(mode) => (viewMode = mode)}
+    onSearchChange={(v) => (search = v)}
+    onCreateGroupClick={() => (showGroupModal = true)}
+  />
+
+  {#if viewMode === "list"}
+    <ServerList
+      servers={filtered}
+      onCheckHealth={handleCheckHealth}
+      onEditServer={openEditModal}
+    />
+  {/if}
+
+  {#if viewMode === "groups"}
+    <GroupedServerList
+      servers={filtered}
+      {groups}
+      onCheckHealth={handleCheckHealth}
+      onEditServer={openEditModal}
+      onRefresh={fetchServers}
+    />
+  {/if}
 
   <Modal bind:showModal>
-    {#snippet header()}
-      <h2 class="text-xl font-semibold mb-4">Add a New Server</h2>
+    {#snippet header(closeDialog: () => void)}
+      <div class="flex items-start justify-between mb-8">
+        <div>
+          <h2 class="text-base uppercase font-semibold text-white">
+            {editingServer ? "Edit Endpoint" : "Add New Endpoint"}
+          </h2>
+          <p class="text-xs text-white/40 mt-0.5 uppercase">
+            {editingServer
+              ? "Update endpoint details"
+              : "Monitor a new endpoint"}
+          </p>
+        </div>
+        <button
+          type="button"
+          onclick={() => {
+            closeModal();
+            closeDialog?.();
+          }}
+          class="text-white/30 hover:text-white/70 transition-colors cursor-pointer p-0.5"
+        >
+          <IconX class="w-4 h-4" />
+        </button>
+      </div>
     {/snippet}
-    <AddServerForm
-      onAddServer={addServer}
-      onClose={() => (showModal = false)}
-    />
+    {#snippet children(closeDialog: () => void)}
+      <AddServerForm
+        onAddServer={addServer}
+        onUpdateServer={updateServer}
+        onClose={() => {
+          closeModal();
+        }}
+        {editingServer}
+        {closeDialog}
+        {groups}
+      />
+    {/snippet}
+  </Modal>
+
+  <Modal bind:showModal={showGroupModal}>
+    {#snippet header(closeDialog: () => void)}
+      <div class="flex items-start justify-between mb-8">
+        <div>
+          <h2 class="text-base uppercase font-semibold text-white">
+            Create Group
+          </h2>
+          <p class="text-xs text-white/40 mt-0.5 uppercase">
+            Organize servers into groups
+          </p>
+        </div>
+        <button
+          type="button"
+          onclick={() => {
+            showGroupModal = false;
+            closeDialog?.();
+          }}
+          class="text-white/40 hover:text-white/60 transition-colors cursor-pointer"
+        >
+          <IconX class="w-4 h-4" />
+        </button>
+      </div>
+    {/snippet}
+
+    {#snippet children(closeDialog: () => void)}
+      <CreateGroupForm
+        onCreateGroup={async (name: string) => {
+          try {
+            await DatabaseService.groups.createGroup(name);
+            await fetchServers();
+            showGroupModal = false;
+            closeDialog?.();
+          } catch (error: any) {
+            throw error;
+          }
+        }}
+        onClose={() => (showGroupModal = false)}
+        {closeDialog}
+      />
+    {/snippet}
   </Modal>
 </main>
 
 <style>
   .container {
-    max-width: 800px;
+    min-width: 800px;
     margin: 0 auto;
-    padding: 2rem;
     display: flex;
     height: 100vh;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
+    padding: 0 1rem;
   }
   @media (prefers-color-scheme: dark) {
     :root {
       color: #f6f6f6;
-      background-color: #1a1b1c;
+      background-color: #272627;
     }
   }
 </style>

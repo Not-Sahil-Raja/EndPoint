@@ -1,29 +1,20 @@
-import Database from "@tauri-apps/plugin-sql";
-import type { Server } from "../types.js";
+import { ServersService } from "./servers.service.js";
+import { GroupsService } from "./groups.service.js";
+import { HealthService } from "./health.service.js";
 
 export class DatabaseService {
-    private db: any = null;
-
     async init() {
-        this.db = await Database.load("sqlite:app.db");
+        // No initialization needed when using Tauri commands
+        // All services are ready to use immediately
     }
 
-    async getServers(): Promise<Server[]> {
-        return await this.db.select("SELECT * FROM servers");
-    }
-
-    async addServer(url: string, name: string): Promise<void> {
-        await this.db.execute("INSERT INTO servers (url, name) VALUES (?, ?)", [url, name]);
-    }
-
-    async clearAllServers(): Promise<void> {
-        await this.db.execute("DELETE FROM servers");
-    }
-
-    async updateServerStatus(id: number, status: string, response_time: number | null): Promise<void> {
-        await this.db.execute(
-            "UPDATE servers SET status = ?, last_checked = CURRENT_TIMESTAMP, response_time = ? WHERE id = ?",
-            [status, response_time, id]
-        );
-    }
+    // Expose all services as static properties for easy access
+    static servers = new ServersService();
+    static groups = new GroupsService();
+    static health = new HealthService();
 }
+
+// Export individual services for direct import
+export { ServersService } from "./servers.service.js";
+export { GroupsService } from "./groups.service.js";
+export { HealthService } from "./health.service.js";

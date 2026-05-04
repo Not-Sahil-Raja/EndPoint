@@ -1,0 +1,13 @@
+CREATE TABLE
+    IF NOT EXISTS groups (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL UNIQUE
+    );
+
+ALTER TABLE servers
+ADD COLUMN group_id INTEGER REFERENCES groups (id) ON DELETE SET NULL;
+
+ALTER TABLE servers
+ADD COLUMN sync_enabled INTEGER NOT NULL DEFAULT 1;
+
+CREATE INDEX IF NOT EXISTS idx_servers_group_id ON servers (group_id);
