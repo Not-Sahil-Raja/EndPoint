@@ -1,102 +1,98 @@
-# EndPoint
+<div style="font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;">
 
-A desktop application for monitoring server endpoints, built with Tauri, SvelteKit, and TypeScript. Easily add servers, check their health status, and view response times in a clean, responsive interface.
+<div align="center" style="margin-top: 24px;">
 
-## Features
+<img src="app-icon.png" alt="EndPoint Logo" width="96" height="96" />
 
-- **Add Servers**: Input server URLs and names to monitor.
-- **Health Checks**: Perform HTTP requests to check server status and response times.
-- **Status Display**: Visual indicators for online (green), offline (red), or unknown (gray) servers, showing HTTP status codes.
-- **Database Storage**: Persistent storage using SQLite for servers and settings.
-- **Responsive UI**: Built with SvelteKit and Tailwind CSS for a modern, adaptive design.
-- **Cross-Platform**: Runs on Windows, macOS, and Linux via Tauri.
+<p style="font-size: 36px; font-weight: 700; margin: 8px 0;">
+  EndPoint
+</p>
 
-## Tech Stack
+<p><strong>Monitor your servers. Stay in control.</strong></p>
 
-- **Frontend**: SvelteKit, TypeScript, Tailwind CSS
-- **Backend**: Tauri (Rust), SQLite
-- **Build Tool**: Vite
-- **Database**: SQLite with migrations
+<p>
+A clean, lightweight desktop app for tracking your endpoints in real time.<br/>
+No clutter. No noise. Just what matters.
+</p>
 
-## Prerequisites
+</div>
 
-- [Node.js](https://nodejs.org/) (v18 or later)
-- [Rust](https://rustup.rs/) (latest stable)
-- [Tauri CLI](https://tauri.app/v1/guides/getting-started/prerequisites): Install with `npm install -g @tauri-apps/cli`
+## Overview
 
-## Installation
+EndPoint gives you a clear view of your services at a glance.
+Add endpoints, group them, and instantly know what’s working and what’s not. 
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/endpoint.git
-   cd endpoint
-   ```
+No dashboards, no noise - just the essentials.
 
-2. Install frontend dependencies:
-   ```bash
-   npm install
-   ```
+## Screenshots
 
-3. Install Rust dependencies and build the Tauri app:
-   ```bash
-   npm run tauri build
-   ```
+<img width="1856" height="1013" alt="Screenshot from 2026-05-04 22-54-27" src="https://github.com/user-attachments/assets/37d5e351-6d51-4619-873d-ba582ee3f6e5" />
+<br></br>
+<img width="1856" height="1013" alt="Screenshot from 2026-05-04 22-51-36" src="https://github.com/user-attachments/assets/d38d2322-0166-47d4-a393-321c5dbbda77" />
+<br></br>
+<img width="1856" height="1013" alt="Screenshot from 2026-05-04 22-52-51" src="https://github.com/user-attachments/assets/f524e789-ccc1-45a9-a399-41651f1862be" />
+<br></br>
+<img width="1856" height="1013" alt="Screenshot from 2026-05-04 22-54-15" src="https://github.com/user-attachments/assets/08cd8722-3540-4d05-85d6-4f4c51b6fc2f" />
 
-## Development
 
-1. Start the development server:
-   ```bash
-   npm run tauri dev
-   ```
-   This launches the app in development mode with hot reloading.
+## What you can do
 
-2. For frontend-only development:
-   ```bash
-   npm run dev
-   ```
+* Monitor server health in real time
+* Track response times
+* Organize endpoints into groups
+* Enable or pause monitoring anytime
 
-## Usage
+## How it works
 
-- Launch the app.
-- Click "Add Server" to input a server URL and name.
-- Use "Check Health" to test connectivity and view status.
-- "Clear All Servers" removes all entries.
+1. Add your endpoint
+2. Set a check interval
+3. Turn on monitoring
 
-## Project Structure
+That’s it - status updates instantly.
 
+## Status Indicators
+
+* 🟢 Online - responding normally
+* 🔴 Offline - unreachable or failing
+* ⚪ Idle - monitoring disabled
+
+## Why EndPoint
+
+* Simple by design
+* Fast and lightweight
+* Works fully on your desktop
+* No unnecessary complexity
+
+## Getting Started
+
+```bash
+git clone https://github.com/your-username/endpoint.git
+cd endpoint
+npm install
+npm run tauri dev
 ```
-src/
-├── lib/
-│   ├── types.ts                    # Shared interfaces
-│   ├── services/
-│   │   ├── database.ts             # Database operations
-│   │   └── healthCheck.ts          # Health check logic
-│   └── utils/
-│       └── statusHelpers.ts        # Utility functions
-├── components/
-│   ├── common/
-│   │   └── Modal.svelte            # Reusable modal
-│   ├── ServerList.svelte           # Server list component
-│   └── AddServerForm.svelte        # Add server form
-└── routes/
-    └── +page.svelte                # Main page
-src-tauri/
-├── src/
-│   ├── main.rs                     # App initialization
-│   └── commands.rs                 # Tauri commands
-└── migrations/
-    ├── 001_init.sql                # Initial schema
-    └── 002_add_indexes.sql         # Additional migrations
+
+## Build
+
+```bash
+npm run tauri build
 ```
+
+Installers will be generated for your platform.
+
+## Roadmap
+
+* Response history
+* Notifications on downtime
+* Custom request settings
+* Webhook integrations
 
 ## Contributing
 
-1. Fork the repository.
-2. Create a feature branch: `git checkout -b feature-name`.
-3. Commit changes: `git commit -am 'Add feature'`.
-4. Push to the branch: `git push origin feature-name`.
-5. Submit a pull request.
+PRs are welcome. Keep changes focused and clean.
 
 ## License
 
-This project is licensed under the MIT License. See LICENSE for details.
+MIT
+
+</div>
