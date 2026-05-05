@@ -1,12 +1,12 @@
 <div style="font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;">
 
-<div align="center" style="margin-top: 24px;">
+<div align="center" style="margin-top: 24px; margin-bottom: 24px;">
 
 <img src="app-icon.png" alt="EndPoint Logo" width="96" height="96" />
 
-<p style="font-size: 36px; font-weight: 700; margin: 8px 0;">
+<h3>
   EndPoint
-</p>
+</h3>
 
 <p><strong>Monitor your servers. Stay in control.</strong></p>
 
@@ -17,6 +17,7 @@ No clutter. No noise. Just what matters.
 
 </div>
 
+<br></br>
 ## Overview
 
 EndPoint gives you a clear view of your services at a glance.
