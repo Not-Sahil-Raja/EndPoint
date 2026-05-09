@@ -66,6 +66,9 @@ jobs:
       - name: install frontend dependencies
         run: pnpm install # Using pnpm based on pnpm-lock.yaml
 
+      - name: approve build scripts
+        run: pnpm approve-builds
+
       - name: build frontend
         run: pnpm build
 
