@@ -15,10 +15,15 @@ const {} = Astro.props;
     <div
       class="w-full max-w-7.5xl mx-auto px-10 h-14 flex items-center justify-between"
     >
-      <a href="/EndPoint/" class="flex items-center gap-2.5 group">
+      <a
+        href="/EndPoint/"
+        class="flex items-center gap-2.5 group"
+        aria-label="Home"
+      >
         <img src="/EndPoint/favicon.svg" alt="EndPoint" class="w-5 h-5" />
         <span class="text-white text-base font-medium tracking-wide"
           >EndPoint</span
+        >
         >
       </a>
 
@@ -27,6 +32,7 @@ const {} = Astro.props;
           href="https://github.com/Not-Sahil-Raja/EndPoint"
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="View EndPoint on GitHub"
           class="hidden md:flex items-center px-2 aspect-square bg-stone-900 hover:bg-stone-950 transition-colors duration-150"
         >
           <Icon name="github-logo" class="w-4 h-4" />
@@ -34,6 +40,7 @@ const {} = Astro.props;
 
         <a
           href="#download"
+          aria-label="Download EndPoint"
           class="group relative isolate overflow-hidden flex items-center gap-1.5 px-3.5 py-1.5 rounded-xs font-semibold uppercase tracking-wide"
         >
           <div class="absolute inset-0 bg-white"></div>
