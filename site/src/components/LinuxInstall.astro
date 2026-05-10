@@ -1,0 +1,150 @@
+---
+import { Icon } from "astro-icon/components";
+
+export interface Props {}
+
+const {} = Astro.props;
+
+const BASE =
+  "https://github.com/Not-Sahil-Raja/EndPoint/releases/download/app-v0.1.0";
+const VERSION = "0.1.0";
+
+const distros = [
+  {
+    title: "AppImage",
+    subtitle: "Recommended · No install needed",
+    badge: { label: "Universal", class: "bg-terminal-green/15 text-terminal-green border-terminal-green/20" },
+    href: `${BASE}/end-point_${VERSION}_amd64.AppImage`,
+    downloadLabel: "AppImage (x64)",
+    steps: [
+      { desc: "Download the AppImage file above" },
+      { desc: "Make it executable", cmd: `chmod +x end-point_${VERSION}_amd64.AppImage` },
+      { desc: "Run directly",       cmd: `./end-point_${VERSION}_amd64.AppImage` },
+    ],
+  },
+  {
+    title: "Debian / Ubuntu",
+    subtitle: ".deb package",
+    badge: { label: "apt", class: "bg-orange-500/10 text-orange-400 border-orange-500/20" },
+    href: `${BASE}/end-point_${VERSION}_amd64.deb`,
+    downloadLabel: ".deb (x64)",
+    steps: [
+      { desc: "Download the .deb file above" },
+      { desc: "Install with dpkg",    cmd: `sudo dpkg -i end-point_${VERSION}_amd64.deb` },
+      { desc: "Fix any missing deps", cmd: "sudo apt-get install -f" },
+    ],
+  },
+  {
+    title: "Fedora / CentOS",
+    subtitle: ".rpm package",
+    badge: { label: "rpm", class: "bg-blue-500/10 text-blue-400 border-blue-500/20" },
+    href: `${BASE}/end-point-${VERSION}-1.x86_64.rpm`,
+    downloadLabel: ".rpm (x64)",
+    steps: [
+      { desc: "Download the .rpm file above" },
+      { desc: "Install with rpm", cmd: `sudo rpm -i end-point-${VERSION}-1.x86_64.rpm` },
+      { desc: "Or use dnf",       cmd: `sudo dnf install end-point-${VERSION}-1.x86_64.rpm` },
+    ],
+  },
+];
+---
+
+<section class="relative text-white font-jetbrains py-12 max-w-7.5xl mx-auto">
+  <div class="absolute inset-y-0 left-4 w-px bg-stone-50/5"></div>
+  <div class="absolute inset-y-0 right-4 w-px bg-stone-50/5"></div>
+
+  <div class="max-w-7.5xl mx-auto w-full px-10 md:px-16">
+    <div class="mb-10">
+      <h2 class="text-2xl font-semibold text-white">Linux Installation</h2>
+      <p class="text-stone-500 text-sm mt-1.5">
+        Choose the package format that fits your distro.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {distros.map((distro) => (
+        <div class="bg-stone-900 border border-white/10 rounded-xs overflow-hidden flex flex-col">
+
+          <!-- Card header -->
+          <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between">
+            <div>
+              <p class="text-white font-medium text-sm">{distro.title}</p>
+              <p class="text-stone-500 text-xs mt-0.5">{distro.subtitle}</p>
+            </div>
+            <span class={`text-xs border rounded-xs px-2.5 py-1 font-medium uppercase ${distro.badge.class}`}>
+              {distro.badge.label}
+            </span>
+          </div>
+
+          <!-- Download button -->
+          <div class="px-5 pt-5 pb-2">
+            <a
+              href={distro.href}
+              class="flex items-center justify-between w-full bg-white/4 hover:bg-white/[0.07] border border-white/10 rounded-xs px-4 py-3 transition-colors group"
+            >
+              <span class="text-stone-300 text-sm group-hover:text-white transition-colors">
+                {distro.downloadLabel}
+              </span>
+              <Icon
+                name="solar:download-minimalistic-bold"
+                class="w-4 h-4 text-stone-500 group-hover:text-stone-300 transition-colors"
+              />
+            </a>
+          </div>
+
+          <!-- Steps -->
+          <div class="px-5 pb-5 pt-4 flex flex-col gap-3">
+            <p class="text-stone-500 text-xs font-medium uppercase tracking-wider">Steps</p>
+            <ol class="flex flex-col gap-3">
+              {distro.steps.map((step, i) => (
+                <li class="flex items-start gap-1.5">
+                  <span class="text-stone-600 text-xs font-mono mt-0.5 w-4 shrink-0">{i + 1}.</span>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-stone-400 text-xs leading-relaxed mb-1.5">{step.desc}</p>
+                    {step.cmd && (
+                      <div class="relative group/cmd">
+                        <code class="block bg-[#0e0e0e] border border-white/[0.07] rounded-xs pl-3 pr-9 py-2 text-xs text-terminal-green font-mono break-all leading-relaxed">
+                          {step.cmd}
+                        </code>
+                        <button
+                          data-cmd={step.cmd}
+                          class="copy-btn absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded text-stone-600 hover:text-stone-300 hover:bg-white/10 transition-all opacity-0 group-hover/cmd:opacity-100 cursor-pointer"
+                          aria-label="Copy command"
+                        >
+                          <Icon name="solar:copy-linear" class="w-3.5 h-3.5 copy-icon" />
+                          <Icon name="solar:check-read-linear" class="w-3.5 h-3.5 check-icon hidden text-terminal-green" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>(".copy-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const cmd = btn.dataset.cmd ?? "";
+      await navigator.clipboard.writeText(cmd);
+
+      const copyIcon  = btn.querySelector<HTMLElement>(".copy-icon");
+      const checkIcon = btn.querySelector<HTMLElement>(".check-icon");
+      if (!copyIcon || !checkIcon) return;
+
+      copyIcon.classList.add("hidden");
+      checkIcon.classList.remove("hidden");
+
+      setTimeout(() => {
+        checkIcon.classList.add("hidden");
+        copyIcon.classList.remove("hidden");
+      }, 1800);
+    });
+  });
+</script>

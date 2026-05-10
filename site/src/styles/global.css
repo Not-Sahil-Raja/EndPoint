@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-jetbrains: "JetBrains Mono", monospace;
+
+  --container-7.5xl: 82rem;
+
+  --color-bulePurple: #6220f3;
+  --color-terminal-green: #19bb1f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #f6f6f6;
+    background-color: #272627;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.text-diff {
+  position: relative;
+  z-index: 1;
+}

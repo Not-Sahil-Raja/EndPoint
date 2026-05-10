@@ -1,0 +1,55 @@
+---
+import { Icon } from "astro-icon/components";
+
+export interface Props {}
+
+const {} = Astro.props;
+---
+
+<header
+  class="fixed top-0 inset-x-0 z-50 font-jetbrains bg-stone-800 border-b border-stone-50/5"
+>
+  <div class="max-w-7.5xl mx-auto w-full relative">
+    <div class="absolute inset-y-0 left-4 w-px bg-stone-50/5"></div>
+    <div class="absolute inset-y-0 right-4 w-px bg-stone-50/5"></div>
+    <div
+      class="w-full max-w-7.5xl mx-auto px-10 h-14 flex items-center justify-between"
+    >
+      <a href="/" class="flex items-center gap-2.5 group">
+        <img src="/favicon.svg" alt="EndPoint" class="w-5 h-5" />
+        <span class="text-white text-base font-medium tracking-wide"
+          >EndPoint</span
+        >
+      </a>
+
+      <div class="flex items-stretch gap-4">
+        <a
+          href="https://github.com/Not-Sahil-Raja/EndPoint"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hidden md:flex items-center px-2 aspect-square bg-stone-900 hover:bg-stone-950 transition-colors duration-150"
+        >
+          <Icon name="github-logo" class="w-4 h-4" />
+        </a>
+
+        <a
+          href="#download"
+          class="group relative isolate overflow-hidden flex items-center gap-1.5 px-3.5 py-1.5 rounded-xs font-semibold uppercase tracking-wide"
+        >
+          <div class="absolute inset-0 bg-white"></div>
+
+          <div
+            class="absolute inset-0 bg-bulePurple origin-left scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100"
+          >
+          </div>
+
+          <p
+            class="relative z-10 text-white mix-blend-difference text-sm leading-5.5"
+          >
+            Download
+          </p>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>

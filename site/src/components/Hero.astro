@@ -1,0 +1,104 @@
+---
+import { Icon } from "astro-icon/components";
+import HeroBackground from "./HeroBackground.astro";
+
+export interface Props {}
+
+const {} = Astro.props;
+---
+
+<section
+  class="relative min-h-screen text-white font-jetbrains flex flex-col overflow-hidden"
+>
+  <div class="absolute inset-x-0 bottom-8 lg:bottom-12 h-px bg-stone-50/5">
+  </div>
+
+  <div
+    class="relative flex-1 w-full max-w-7.5xl mx-auto px-4 py-1 pb-8 lg:pb-12"
+  >
+    <HeroBackground />
+
+    <div class="absolute inset-y-0 left-4 w-px bg-stone-50/5"></div>
+
+    <div class="absolute inset-y-0 right-4 w-px bg-stone-50/5"></div>
+
+    <div class="relative w-full h-full md:flex px-4 lg:px-8 py-4">
+      <div
+        class="flex flex-1 flex-col justify-center items-center md:items-start text-left px-2 lg:px-4 gap-3 min-h-[calc(100vh-6rem)]"
+      >
+        <h1 class="text-4xl font-bold">
+          EndPoint - The Ultimate Server Monitor
+        </h1>
+
+        <h4 class="text-base leading-tight opacity-65 max-w-xl">
+          A compact, intuitive, and feature-rich server monitoring tool.
+        </h4>
+
+        <div
+          class="flex flex-col sm:flex-row mt-6 gap-3 sm:gap-4 items-stretch w-full"
+        >
+          <a
+            id="download-btn"
+            href="#"
+            class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xs cursor-pointer duration-150 transition-colors inline-flex items-center gap-2 justify-center"
+          >
+            <Icon
+              id="os-logo"
+              name="solar:download-minimalistic-bold"
+              class="w-4 h-4"
+            />
+
+            <span id="download-text">Download</span>
+          </a>
+
+          <a
+            href="https://github.com/Not-Sahil-Raja/EndPoint#features"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="bg-stone-900 hover:bg-stone-950 text-white px-4 py-2 rounded-xs cursor-pointer duration-150 transition-colors inline-flex items-center gap-2 justify-center"
+          >
+            Explore Features
+          </a>
+        </div>
+      </div>
+
+      <div class="hidden md:block flex-1"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const downloadBtn = document.getElementById(
+    "download-btn",
+  ) as HTMLAnchorElement;
+
+  const downloadText = document.getElementById("download-text");
+
+  const osLogo = document.getElementById("os-logo");
+
+  if (downloadBtn && downloadText && osLogo) {
+    const userAgent = navigator.userAgent;
+
+    if (userAgent.includes("Mac")) {
+      downloadText.textContent = "Download For macOS";
+
+      downloadBtn.href =
+        "https://github.com/Not-Sahil-Raja/EndPoint/releases/download/app-v0.1.0/end-point_0.1.0_aarch64.dmg";
+
+      osLogo.setAttribute("name", "mdi:apple");
+    } else if (userAgent.includes("Windows")) {
+      downloadText.textContent = "Download For Windows";
+
+      downloadBtn.href =
+        "https://github.com/Not-Sahil-Raja/EndPoint/releases/download/app-v0.1.0/end-point_0.1.0_x64-setup.exe";
+
+      osLogo.setAttribute("name", "mdi:microsoft-windows");
+    } else {
+      downloadText.textContent = "Download For Linux";
+
+      downloadBtn.href = "#linux-install";
+
+      osLogo.setAttribute("name", "mdi:linux");
+    }
+  }
+</script>

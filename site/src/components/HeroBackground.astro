@@ -1,0 +1,76 @@
+<div
+  class="absolute inset-4 bottom-8 sm:bottom-12 z-0 overflow-hidden hero-mask"
+>
+  <div class="relative h-full w-full">
+    <svg
+      class="w-full h-full blur-lg"
+      viewBox="0 0 1920 879"
+      preserveAspectRatio="xMidYMid slice"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M-2 879L1745.5 703.064C1758.2 701.785 1769.27 693.875 1774.6 682.275L1778.03 674.817C1786.05 657.367 1781.82 636.732 1767.59 623.839L1432.65 320.392C1423.72 312.308 1425.8 297.766 1436.63 292.503L1920 57.5952V36.8717L1383.65 289.312C1368.82 296.29 1365.19 315.746 1376.51 327.599L1669.06 634.044C1673.59 638.791 1670.8 646.674 1664.29 647.504L-2 860.026V879Z"
+        fill="#6220F3"></path>
+      <path
+        d="M1920 0L1223.09 262.407C1211.27 266.857 1207 281.386 1214.54 291.522L1337.77 457.341C1345.14 467.257 1339.81 481.473 1327.74 484.095L1254.5 500L-2 803.104V841.052L1387.18 529.515C1400.14 526.608 1406.2 511.634 1398.89 500.535L1261.24 291.25C1257.76 285.958 1260.01 278.805 1265.9 276.464L1920 16.1482V0Z"
+        fill="#6220F3"></path>
+      <path
+        d="M1398.89 500.535C1406.2 511.634 1400.14 526.608 1387.18 529.515L-2 841.052V850.539L1504.19 558.069C1511.1 556.727 1513.87 548.328 1509.1 543.144L1278.92 292.676C1277.5 291.137 1278.06 288.659 1279.99 287.869L1920 26.51V16.1482L1265.9 276.464C1260.01 278.805 1257.76 285.958 1261.24 291.25L1398.89 500.535Z"
+        fill="#FBBF24"></path>
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M1278.92 292.676C1277.5 291.137 1278.06 288.659 1279.99 287.869L1920 26.51V34L1330.65 293.194C1326.35 295.087 1325.1 300.602 1328.16 304.167L1578.94 595.724C1583.54 601.076 1580.48 609.402 1573.5 610.486L-2 855.282V850.539L1504.19 558.069C1511.1 556.727 1513.87 548.328 1509.1 543.144L1278.92 292.676Z"
+        fill="white"></path>
+      <path
+        d="M-2 860.026L1664.29 647.504C1670.8 646.674 1673.59 638.791 1669.06 634.044L1376.51 327.599C1365.19 315.746 1368.82 296.29 1383.65 289.312L1920 36.8717V34L1330.65 293.194C1326.35 295.087 1325.1 300.602 1328.16 304.167L1578.94 595.724C1583.54 601.076 1580.48 609.402 1573.5 610.486L-2 855.282V860.026Z"
+        fill="#FBBF24"></path>
+    </svg>
+    <div class="absolute inset-0 overflow-hidden">
+      {
+        Array.from({ length: 22 }, (_, i) => (
+          <div
+            class="absolute top-0 bottom-0 backdrop-blur-md"
+            style={`
+            width: 60px;
+            left: ${i * 65 - 20}px;
+            transform: skewX(-60deg);
+            border-left: 1px solid rgba(255,255,255,0.04);
+            `}
+          />
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<style>
+  @media (min-width: 768px) {
+    .hero-mask {
+      mask-image:
+        linear-gradient(
+          to right,
+          transparent 0%,
+          black 12%,
+          black 88%,
+          transparent 100%
+        ),
+        linear-gradient(to bottom, black 70%, transparent 100%);
+
+      mask-composite: intersect;
+
+      -webkit-mask-image:
+        linear-gradient(
+          to right,
+          transparent 0%,
+          black 12%,
+          black 88%,
+          transparent 100%
+        ),
+        linear-gradient(to bottom, black 70%, transparent 100%);
+
+      -webkit-mask-composite: source-in;
+    }
+  }
+</style>

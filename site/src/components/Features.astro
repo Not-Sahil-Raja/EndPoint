@@ -1,0 +1,89 @@
+---
+export interface Props {}
+
+const {} = Astro.props;
+---
+
+<section
+  class="relative text-white font-jetbrains min-h-screen md:h-screen"
+  id="features"
+>
+  <div class="absolute inset-x-0 bottom-4 h-px bg-stone-50/5"></div>
+  <div class="max-w-7.5xl mx-auto w-full h-full px-10 md:px-16 relative">
+    <div class="absolute inset-y-0 left-4 w-px bg-stone-50/5"></div>
+    <div class="absolute inset-y-0 right-4 w-px bg-stone-50/5"></div>
+    <div class="mb-10">
+      <h2 class="text-3xl font-semibold leading-snug text-white">
+        Everything you need, nothing you don't
+      </h2>
+      <p class="mt-1 text-base text-zinc-400">
+        A unified workspace for your endpoints across every surface.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div
+        class="flex flex-col overflow-hidden rounded-sm border border-white/10 bg-[#1a1a1a] transition-colors duration-200 hover:border-white/20 p-4"
+      >
+        <img
+          src="https://media.giphy.com/media/v1.Y2lkPTc0M3v2MjRzYjZ6Z2ZlZXQxMzZlM2Q3NzJjNjZlZjFmM2JkM2Q3M2UxZjM5MjJmMg/giphy.gif"
+          alt="Pulsing status indicator"
+          class="w-full opacity-70 h-60 rounded-md bg-stone-800 object-cover"
+        />
+
+        <div class="flex flex-1 flex-col px-1 pt-5 pb-3">
+          <h3 class="mb-1.5 text-base font-medium text-white">
+            Real-time Status
+          </h3>
+
+          <p class="text-sm leading-tight text-zinc-400">
+            Track server health instantly with clear visual indicators and live
+            response data.
+          </p>
+        </div>
+      </div>
+
+      <div
+        class="flex flex-col overflow-hidden rounded-sm border border-white/10 bg-[#1a1a1a] transition-colors duration-200 hover:border-white/20 p-4"
+      >
+        <img
+          src="https://media.giphy.com/media/v1.Y2lkPTc0M3v2MjRzYjZ6Z2ZlZXQxMzZlM2Q3NzJjNjZlZjFmM2JkM2Q3M2UxZjM5MjJmMg/giphy.gif"
+          alt="Response tracking visualization"
+          class="w-full opacity-70 h-60 rounded-md bg-stone-800 object-cover"
+        />
+
+        <div class="flex flex-1 flex-col px-1 pt-5 pb-3">
+          <h3 class="mb-1.5 text-base font-medium text-white">
+            Response Tracking
+          </h3>
+
+          <p class="text-sm leading-tight text-zinc-400">
+            Monitor performance metrics and response times over time with
+            historical charts.
+          </p>
+        </div>
+      </div>
+
+      <div
+        class="flex flex-col overflow-hidden rounded-sm border border-white/10 bg-[#1a1a1a] transition-colors duration-200 hover:border-white/20 p-4"
+      >
+        <img
+          src="https://media.giphy.com/media/v1.Y2lkPTc0M3v2MjRzYjZ6Z2ZlZXQxMzZlM2Q3NzJjNjZlZjFmM2JkM2Q3M2UxZjM5MjJmMg/giphy.gif"
+          alt="Organization visualization"
+          class="w-full opacity-70 h-60 rounded-md bg-stone-800 object-cover"
+        />
+
+        <div class="flex flex-1 flex-col px-1 pt-5 pb-3">
+          <h3 class="mb-1.5 text-base font-medium text-white">
+            Smart Organization
+          </h3>
+
+          <p class="text-sm leading-tight text-zinc-400">
+            Group related endpoints by environment, team, or project for cleaner
+            management.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

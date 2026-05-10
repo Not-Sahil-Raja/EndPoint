@@ -1,0 +1,35 @@
+---
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta
+      name="description"
+      content="A clean, lightweight desktop app for monitoring your servers and endpoints in real-time."
+    />
+    <meta property="og:title" content={title} />
+    <meta
+      property="og:description"
+      content="Monitor your servers. Stay in control. A clean desktop app for real-time endpoint monitoring."
+    />
+    <meta
+      property="og:image"
+      content="https://raw.githubusercontent.com/Not-Sahil-Raja/EndPoint/main/app-icon.png"
+    />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
