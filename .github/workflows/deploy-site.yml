@@ -22,24 +22,24 @@ jobs:
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@v4
-      
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@8912a9102ac27614460f54aedde9e1e7f9aec20d
+        with:
+          version: 11
+
       - name: 📦 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
-      
-      - name: 📦 Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: latest
-      
+
       - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
-      
+        run: pnpm install
+
       - name: 🔨 Build site
         run: pnpm run build
-      
+
       - name: 📤 Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
