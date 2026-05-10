@@ -1,4 +1,6 @@
 packages:
-  - 'site'
+  - site
+
 onlyBuiltDependencies:
   - esbuild
+  - sharp
