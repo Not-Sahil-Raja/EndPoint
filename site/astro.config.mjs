@@ -10,6 +10,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-
   integrations: [icon()],
+  site: 'https://Not-Sahil-Raja.github.io',
+  base: '/EndPoint',
 });
