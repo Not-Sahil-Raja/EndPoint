@@ -12,5 +12,6 @@ export default defineConfig({
   },
   integrations: [icon()],
   site: "https://Not-Sahil-Raja.github.io",
-  base: ".",
+  base: "/EndPoint",
+  trailingSlash: "never",
 });
