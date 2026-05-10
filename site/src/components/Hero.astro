@@ -42,12 +42,21 @@ const {} = Astro.props;
             href="#"
             class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xs cursor-pointer duration-150 transition-colors inline-flex items-center gap-2 justify-center"
           >
-            <Icon
-              id="os-logo"
-              name="solar:download-minimalistic-bold"
-              class="w-4 h-4"
-            />
-
+            <span id="os-icon-mac" class="hidden"
+              ><Icon name="apple-logo" class="w-4 h-4" /></span
+            >
+            <span id="os-icon-win" class="hidden"
+              ><Icon name="windows-logo" class="w-4 h-4" /></span
+            >
+            <span id="os-icon-linux" class="hidden"
+              ><Icon name="linux-logo" class="w-4 h-4" /></span
+            >
+            <span id="os-icon-default"
+              ><Icon
+                name="solar:download-minimalistic-bold"
+                class="w-4 h-4"
+              /></span
+            >
             <span id="download-text">Download</span>
           </a>
 
@@ -68,37 +77,35 @@ const {} = Astro.props;
 </section>
 
 <script>
-  const downloadBtn = document.getElementById(
-    "download-btn",
-  ) as HTMLAnchorElement;
+  const btn = document.getElementById("download-btn") as HTMLAnchorElement;
+  const text = document.getElementById("download-text")!;
 
-  const downloadText = document.getElementById("download-text");
+  const icons = {
+    mac: document.getElementById("os-icon-mac")!,
+    win: document.getElementById("os-icon-win")!,
+    linux: document.getElementById("os-icon-linux")!,
+    default: document.getElementById("os-icon-default")!,
+  };
 
-  const osLogo = document.getElementById("os-logo");
+  const ua = navigator.userAgent;
 
-  if (downloadBtn && downloadText && osLogo) {
-    const userAgent = navigator.userAgent;
-
-    if (userAgent.includes("Mac")) {
-      downloadText.textContent = "Download For macOS";
-
-      downloadBtn.href =
-        "https://github.com/Not-Sahil-Raja/EndPoint/releases/download/app-v0.1.0/end-point_0.1.0_aarch64.dmg";
-
-      osLogo.setAttribute("name", "mdi:apple");
-    } else if (userAgent.includes("Windows")) {
-      downloadText.textContent = "Download For Windows";
-
-      downloadBtn.href =
-        "https://github.com/Not-Sahil-Raja/EndPoint/releases/download/app-v0.1.0/end-point_0.1.0_x64-setup.exe";
-
-      osLogo.setAttribute("name", "mdi:microsoft-windows");
-    } else {
-      downloadText.textContent = "Download For Linux";
-
-      downloadBtn.href = "#linux-install";
-
-      osLogo.setAttribute("name", "mdi:linux");
-    }
+  if (ua.includes("Mac")) {
+    text.textContent = "Download for macOS";
+    btn.href =
+      "https://github.com/Not-Sahil-Raja/EndPoint/releases/download/app-v0.1.0/end-point_0.1.0_aarch64.dmg";
+    icons.default.classList.add("hidden");
+    icons.mac.classList.remove("hidden");
+  } else if (ua.includes("Win")) {
+    text.textContent = "Download for Windows";
+    btn.href =
+      "https://github.com/Not-Sahil-Raja/EndPoint/releases/download/app-v0.1.0/end-point_0.1.0_x64-setup.exe";
+    icons.default.classList.add("hidden");
+    icons.win.classList.remove("hidden");
+  } else {
+    text.textContent = "Download for Linux";
+    btn.href =
+      "https://github.com/Not-Sahil-Raja/EndPoint/releases/download/app-v0.1.0/end-point_0.1.0_amd64.AppImage";
+    icons.default.classList.add("hidden");
+    icons.linux.classList.remove("hidden");
   }
 </script>
