@@ -2,8 +2,8 @@ packages:
   - site
 
 allowBuilds:
-  esbuild: set this to true or false
-  sharp: set this to true or false
+  esbuild: true
+  sharp: false
 
 ignoredBuiltDependencies:
   - esbuild@0.27.7
@@ -11,4 +11,5 @@ ignoredBuiltDependencies:
 
 onlyBuiltDependencies:
   - esbuild
+  - esbuild@0.27.7
   - sharp
